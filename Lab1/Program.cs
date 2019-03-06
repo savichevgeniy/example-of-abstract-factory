@@ -27,9 +27,10 @@ namespace Lab1
     {
         //Создаем виртуального метода - содержащего вывод позиции игрока.
         //Виртуальный метод может не использоваться в дочернем классе, в отличии от абстрактного.
+        //На данном примере также будет продемонстрированно ранне (статическая) и позднее (динамическая) связывание (типизация)
         public virtual void PlayerPosition()
         {
-            Console.WriteLine("Здесь будет ваша позиция");
+            Console.WriteLine("Нападающий!");
         }
     }
     //Дочерний класс, который служит для задания конкретного инвентаря (фетбольного)
@@ -71,142 +72,141 @@ namespace Lab1
         {
             Console.WriteLine("Веди!");
         }
-        //Дочерий класс, который служит для задания конкретного действия - защита.
-        class Defense : AbstractAction
+    }
+    //Дочерий класс, который служит для задания конкретного действия - защита.
+    class Defense : AbstractAction
+    {
+        public override void Action()
         {
-            public override void Action()
-            {
-                Console.WriteLine("Защищайся!");
-            }
+            Console.WriteLine("Защищайся!");
         }
-        //Дочерий класс, который служит для задания действия - нападающий.
-        class Attack : AbsractPosition
+    }
+    //Дочерий класс, который служит для задания действия - нападающий.
+    class Attack : AbsractPosition
+    {
+        //Раннее связывание. Использование метода, базового класса, для заданаия позиции - нападающий.
+        public new void PlayerPosition()
         {
-            //Переопределение метода для заданаия позиции - нападающий.
-            public override void PlayerPosition()
-            {
-                Console.WriteLine("Нападающий!");
-            }
-
-        }
-        //Дочерий класс, служащий для задании позиции - защитник.
-        class Defender : AbsractPosition
-        {
-            //Переопределение метода для заданаия позиции - защитник.
-            public override void PlayerPosition()
-            {
-                Console.WriteLine("Защитник!");
-            }
-        }
-        //Дочерий класс, служащий для задании позиции - поддержка.
-        class Support : AbsractPosition
-        {
-            //Переопределение метода для заданаия позиции - поддержка.
-            public override void PlayerPosition()
-            {
-                Console.WriteLine("Поддержка!");
-            }
-        }
-        //Создание абстрактного класса служащего для реализации конкретного описания спорта.
-        abstract class AbstractFactory
-        {
-            //Абстрактные методы реализации конкретных парамметров описания вида спорта. 
-            public abstract AbstractInventory CreateInventory();
-            public abstract AbstractAction CreateAction();
-            public abstract AbsractPosition CreatePosition();
-        }
-        //Дочерий класс служащий для реализации конкретного спорта - футбол.
-        class FootballFactory : AbstractFactory
-        {
-            //Создание функций возвращающих конретные параметры для футбола.
-            public override AbstractInventory CreateInventory()
-            {
-                return new FootballInventory();
-            }
-            public override AbstractAction CreateAction()
-            {
-                return new Hit();
-            }
-            public override AbsractPosition CreatePosition()
-            {
-                return new Attack();
-            }
-        }
-        //Дочерий класс служащий для реализации конкретного  вида спорта - волейбол.
-        class VolleyballFactory : AbstractFactory
-        {
-            //Создание функций возвращающих конретные параметры для волейбола.
-            public override AbstractInventory CreateInventory()
-            {
-                return new VolleyballInventory();
-            }
-            public override AbstractAction CreateAction()
-            {
-                return new Defense();
-            }
-            public override AbsractPosition CreatePosition()
-            {
-                return new Defender();
-            }
-        }
-        //Дочерий класс служащий для задания спорта - хоккей.
-        class HockeyFactory : AbstractFactory
-        {
-            //Создание функций возвращающих конретные параметры для хоккея.
-            public override AbstractInventory CreateInventory()
-            {
-                return new HockeyInventory();
-            }
-            public override AbstractAction CreateAction()
-            {
-                return new Conducting();
-            }
-            public override AbsractPosition CreatePosition()
-            {
-                return new Support();
-            }
-        }
-        //создание класса служащего для вывода спорта
-        class Playground
-        {
-            //Создание конструктора для вывода конкретного экземпляра спорта
-            public Playground(AbstractFactory factory)
-            {
-                _factory = factory;
-            }
-
-            private AbstractFactory _factory;
-            //Функция для реализации конкретного вида спорта.
-            public void InitiateGame()
-            {
-                AbstractInventory sport = _factory.CreateInventory();
-                AbstractAction action = _factory.CreateAction();
-                AbsractPosition position = _factory.CreatePosition();
-                Console.WriteLine("Твой инвентарь: ");
-                sport.Item();
-                Console.WriteLine("Твое действие: ");
-                action.Action();
-                Console.WriteLine("Твоя позиция");
-                position.PlayerPosition();
-            }
         }
 
-        class Program
+    }
+    //Дочерий класс, служащий для задании позиции - защитник.
+    class Defender : AbsractPosition
+    {
+        //Позднее связывание. Переопределение метода для заданаия позиции - защитник.
+        public override void PlayerPosition()
         {
-            static void Main(string[] args)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                //Демонстрация вызова функции на конкретном примере - футбол.
-                FootballFactory footballFactory = new FootballFactory();
-                Playground playground = new Playground(footballFactory);
-                playground.InitiateGame();
-                Console.WriteLine("____________________________________");
-                //Демонстрация вызова функции на конкретном примере - футбол.
-                HockeyFactory hockeyFactory = new HockeyFactory();
-                playground = new Playground(hockeyFactory);
-                playground.InitiateGame();
-                Console.ReadKey();
-            }
+            Console.WriteLine("Защитник!");
+        }
+    }
+    //Дочерий класс, служащий для задании позиции - поддержка.
+    class Support : AbsractPosition
+    {
+        //Переопределение метода для заданаия позиции - поддержка.
+        public override void PlayerPosition()
+        {
+            Console.WriteLine("Поддержка!");
+        }
+    }
+    //Создание абстрактного класса служащего для реализации конкретного описания спорта.
+    abstract class AbstractFactory
+    {
+        //Абстрактные методы реализации конкретных парамметров описания вида спорта. 
+        public abstract AbstractInventory CreateInventory();
+        public abstract AbstractAction CreateAction();
+        public abstract AbsractPosition CreatePosition();
+    }
+    //Дочерий класс служащий для реализации конкретного спорта - футбол.
+    class FootballFactory : AbstractFactory
+    {
+        //Создание функций возвращающих конретные параметры для футбола.
+        public override AbstractInventory CreateInventory()
+        {
+            return new FootballInventory();
+        }
+        public override AbstractAction CreateAction()
+        {
+            return new Hit();
+        }
+        public override AbsractPosition CreatePosition()
+        {
+            return new Attack();
+        }
+    }
+    //Дочерий класс служащий для реализации конкретного  вида спорта - волейбол.
+    class VolleyballFactory : AbstractFactory
+    {
+        //Создание функций возвращающих конретные параметры для волейбола.
+        public override AbstractInventory CreateInventory()
+        {
+            return new VolleyballInventory();
+        }
+        public override AbstractAction CreateAction()
+        {
+            return new Defense();
+        }
+        public override AbsractPosition CreatePosition()
+        {
+            return new Defender();
+        }
+    }
+    //Дочерий класс служащий для задания спорта - хоккей.
+    class HockeyFactory : AbstractFactory
+    {
+        //Создание функций возвращающих конретные параметры для хоккея.
+        public override AbstractInventory CreateInventory()
+        {
+            return new HockeyInventory();
+        }
+        public override AbstractAction CreateAction()
+        {
+            return new Conducting();
+        }
+        public override AbsractPosition CreatePosition()
+        {
+            return new Support();
+        }
+    }
+    //создание класса служащего для вывода спорта
+    class Playground
+    {
+        //Создание конструктора для вывода конкретного экземпляра спорта
+        public Playground(AbstractFactory factory)
+        {
+            _factory = factory;
+        }
+
+        private AbstractFactory _factory;
+        //Функция для реализации конкретного вида спорта.
+        public void InitiateGame()
+        {
+            AbstractInventory sport = _factory.CreateInventory();
+            AbstractAction action = _factory.CreateAction();
+            AbsractPosition position = _factory.CreatePosition();
+            Console.WriteLine("Твой инвентарь: ");
+            sport.Item();
+            Console.WriteLine("Твое действие: ");
+            action.Action();
+            Console.WriteLine("Твоя позиция");
+            position.PlayerPosition();
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            //Демонстрация вызова функции на конкретном примере - футбол.
+            FootballFactory footballFactory = new FootballFactory();
+            Playground playground = new Playground(footballFactory);
+            playground.InitiateGame();
+            Console.WriteLine("____________________________________");
+            //Демонстрация вызова функции на конкретном примере - футбол.
+            HockeyFactory hockeyFactory = new HockeyFactory();
+            playground = new Playground(hockeyFactory);
+            playground.InitiateGame();
+            Console.ReadKey();
         }
     }
 }
