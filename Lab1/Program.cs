@@ -14,6 +14,7 @@ namespace Lab1
     //Создание Абстрактного класса - "AbstractInventory" - базовый для видов спорта.
     abstract class AbstractInventory
     {
+        //Создание абстрактного метода. Такой метод является обязательным для использования в дочернем классе.
         public abstract void Item();
     }
     //Создание Абстрактного класса - "AbstractAction" - базовый для действий.
@@ -25,6 +26,7 @@ namespace Lab1
     abstract class AbsractPosition
     {
         //Создаем виртуального метода - содержащего вывод позиции игрока.
+        //Виртуальный метод может не использоваться в дочернем классе, в отличии от абстрактного.
         public virtual void PlayerPosition()
         {
             Console.WriteLine("Здесь будет ваша позиция");
@@ -193,11 +195,16 @@ namespace Lab1
         {
             static void Main(string[] args)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 //Демонстрация вызова функции на конкретном примере - футбол.
                 FootballFactory footballFactory = new FootballFactory();
                 Playground playground = new Playground(footballFactory);
                 playground.InitiateGame();
-
+                Console.WriteLine("____________________________________");
+                //Демонстрация вызова функции на конкретном примере - футбол.
+                HockeyFactory hockeyFactory = new HockeyFactory();
+                playground = new Playground(hockeyFactory);
+                playground.InitiateGame();
                 Console.ReadKey();
             }
         }
