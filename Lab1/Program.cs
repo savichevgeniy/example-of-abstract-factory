@@ -46,7 +46,7 @@ namespace Lab1
     {
         public override void Item()
         {
-            Console.WriteLine("Клюшка");
+            Console.WriteLine("Клюшка!");
         }
     }
     //Дочерий класс, который служит для задания волейбольного инвентаря
@@ -183,11 +183,11 @@ namespace Lab1
             AbstractInventory sport = _factory.CreateInventory();
             AbstractAction action = _factory.CreateAction();
             AbsractPosition position = _factory.CreatePosition();
-            Console.WriteLine("Твой инвентарь: ");
+            Console.Write("Твой инвентарь: ");
             sport.Item();
-            Console.WriteLine("Твое действие: ");
+            Console.Write("Твое действие: ");
             action.Action();
-            Console.WriteLine("Твоя позиция");
+            Console.Write("Твоя позиция: ");
             position.PlayerPosition();
         }
     }
